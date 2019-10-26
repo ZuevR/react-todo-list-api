@@ -22,10 +22,7 @@ module.exports = {
     if (!isEmail(email)) return res.status(400).send({ message: 'Incorrect email' });
 
     // length validation
-    if (!isLength(name, { min: 2, max: 30 })) {
-      return res.status(400).send({ message: 'The name must be at least 2 and no more 30 characters long' });
-    }
-    if (!isLength(password, { min: 5, max: 30 })) {
+    if (!isLength(password, { min: 6, max: 30 })) {
       return res.status(400).send({ message: 'The password must be at least 6 and no more 30 characters long' });
     }
     next();
