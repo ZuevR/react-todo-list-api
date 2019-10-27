@@ -13,4 +13,9 @@ app.use(cors());
 
 app.use('/api/v1/auth', authRouter);
 
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.send({ message: err.message || 'Something broke' });
+});
+
 module.exports = app;
