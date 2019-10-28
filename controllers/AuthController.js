@@ -1,4 +1,3 @@
-const connection = require('../database');
 const { User } = require('../models');
 const { AppSecurity } = require('../middleware');
 
@@ -14,12 +13,8 @@ module.exports = {
         password: await AppSecurity.generatePasswordHash(password)
       });
       const createUser = await user.save();
-      const token = AppSecurity.generateToken(createUser._id);
-      const response = {
-        name: createUser.name,
-        token,
-      };
-      res.status(201).send(response);
+      const token = AppSecurity.generateToken(createUser._id, createUser.name);
+      res.status(201).send({ token });
     } catch (error) {
       error.status = 409;
       next(error);

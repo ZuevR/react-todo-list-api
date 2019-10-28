@@ -11,12 +11,9 @@ module.exports = {
     return await compare(password, hash);
   },
 
-  generateToken(uuid, hours = 24) {
+  generateToken(uuid, name, hours = 24) {
     const exp = Math.floor(Date.now() / 1000 + (3600 * hours));
-    return {
-      id: sign({ exp, id: uuid }, 'h42Hq9lgCs'),
-      expire: exp
-    };
+    return sign({ exp, id: uuid, name }, 'h42Hq9lgCs');
   },
 
   verifyToken(req, res, next) {
