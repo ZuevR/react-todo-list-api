@@ -1,4 +1,4 @@
-const { sign } = require('jsonwebtoken');
+const { sign, verify } = require('jsonwebtoken');
 const { hash, compare } = require('bcrypt');
 
 module.exports = {
@@ -17,6 +17,19 @@ module.exports = {
       id: sign({ exp, id: uuid }, 'h42Hq9lgCs'),
       expire: exp
     };
+  },
+
+  verifyToken(req, res, next) {
+    const token = req.headers.token;
+
+    verify(token, 'h42Hq9lgCs', (err, decoded) => {
+      if (decoded) {
+        req._userId = decoded.id;
+        next();
+      } else {
+        res.status(401).send({ message: 'Authorization failed' });
+      }
+    });
   }
 
 };

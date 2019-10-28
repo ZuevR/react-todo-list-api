@@ -24,6 +24,23 @@ module.exports = {
       error.status = 409;
       next(error);
     }
+  },
+
+  async getIdentity(req, res, next) {
+    const id = req._userId;
+    try {
+      const user = await User.findById(id);
+      const currentUser = {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      };
+      res.status(200).send(currentUser);
+    } catch (error) {
+      res.status(404).send({ message: 'User not found' });
+    }
+
+
   }
 
 };
