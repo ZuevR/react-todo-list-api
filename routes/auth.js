@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { AuthController } = require('../controllers');
-const { AppValidator, AppSecurity } = require('../middleware');
+const { AppValidator } = require('../middleware');
 
 router.post(
   '/sign-up',
@@ -10,10 +10,11 @@ router.post(
   AuthController.signUp
 );
 
-router.get(
-  '/check-identity',
-  AppSecurity.verifyToken,
-  AuthController.getIdentity,
+router.post(
+  '/sign-in',
+  AppValidator.sanitizeUserData,
+  AppValidator.validateUserData,
+  AuthController.signIn
 );
 
 module.exports = router;

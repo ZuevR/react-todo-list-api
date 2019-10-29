@@ -26,6 +26,15 @@ module.exports = {
       return res.status(400).send({ message: 'The password must be at least 6 and no more 30 characters long' });
     }
     next();
+  },
+
+  validateUserData(req, res, next) {
+    const { email, password } = req.body;
+
+    // required validation
+    if (!email) return res.status(400).send({ message: 'The email is required' });
+    if (!password) return res.status(400).send({ message: 'The password is required' });
+    next();
   }
 
 };

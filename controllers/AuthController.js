@@ -21,21 +21,32 @@ module.exports = {
     }
   },
 
-  async getIdentity(req, res, next) {
-    const id = req._userId;
+  async signIn(req, res, next) {
+    const { email, password } = req.body;
+
     try {
-      const user = await User.findById(id);
-      const currentUser = {
-        id: user._id,
-        name: user.name,
-        email: user.email
-      };
-      res.status(200).send(currentUser);
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).send({ message: 'User not found' });
+      if(!await AppSecurity.validatePassword(password, user.password)) return res.status(403).send({ message: 'Wrong password' });
+      return res.status(200).send({token: AppSecurity.generateToken(user._id, user.name, 24)});
     } catch (error) {
-      res.status(404).send({ message: 'User not found' });
+      next(error);
     }
-
-
   }
+
+  // async getIdentity(req, res, next) {
+  //   const id = req._userId;
+  //   try {
+  //     const user = await User.findById(id);
+  //     const currentUser = {
+  //       id: user._id,
+  //       name: user.name,
+  //       email: user.email
+  //     };
+  //     res.status(200).send(currentUser);
+  //   } catch (error) {
+  //     res.status(404).send({ message: 'User not found' });
+  //   }
+  // }
 
 };

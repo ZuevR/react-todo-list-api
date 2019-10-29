@@ -15,6 +15,8 @@ app.use(cors());
 app.use('/api/v1/auth', authRouter);
 
 app.use((err, req, res, next) => {
+  console.log(q);
+  console.log(err);
   res.status(err.status || 500);
   res.send({ message: err.message || 'Something broke' });
 });
