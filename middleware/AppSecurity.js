@@ -1,5 +1,6 @@
 const { sign, verify } = require('jsonwebtoken');
 const { hash, compare } = require('bcrypt');
+const config = require('config');
 
 module.exports = {
 
@@ -13,13 +14,13 @@ module.exports = {
 
   generateToken(uuid, name, hours = 24) {
     const exp = Math.floor(Date.now() / 1000 + (3600 * hours));
-    return sign({ exp, id: uuid, name }, 'h42Hq9lgCs');
+    return sign({ exp, id: uuid, name }, config.get('tokenSecretKey'));
   },
 
   verifyToken(req, res, next) {
     const token = req.headers.token;
 
-    verify(token, 'h42Hq9lgCs', (err, decoded) => {
+    verify(token, config.get('tokenSecretKey'), (err, decoded) => {
       if (decoded) {
         req._userId = decoded.id;
         next();
