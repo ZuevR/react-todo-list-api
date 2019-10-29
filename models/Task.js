@@ -5,9 +5,9 @@ const Schema = mongoose.Schema;
  * Task Model fields
  */
 const taskScheme = new Schema({
-  _id: { type: Number, required: true },
   description: { type: String, required: true },
-  // password: { type: String, required: true }
+  status: { type: Boolean, required: true },
+  user_id: { type: String, required: true }
 });
 
 
