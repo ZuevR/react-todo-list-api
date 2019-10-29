@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const connection = require('../database');
 const Schema = mongoose.Schema;
 
 mongoose.set('useCreateIndex', true);
